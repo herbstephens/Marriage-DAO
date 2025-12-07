@@ -10,7 +10,7 @@ import {Base64} from "openzeppelin-contracts/contracts/utils/Base64.sol";
  * @title VowNFT
  * @author Leticia Azevedo (@letiweb3)
  * @dev ERC-721 token representing a verified human bond.
- *      Each NFT stores metadata about the two partners, bond start date, and a unique marriage ID.
+ *      Each NFT stores metadata about the two partners and a unique marriage ID.
  */
 contract VowNFT is ERC721, Ownable {
     using Strings for uint256;
@@ -47,7 +47,6 @@ contract VowNFT is ERC721, Ownable {
     }
 
     /// @notice Set the HumanBond contract address
-    //lets the owner (the deployer) set which contract is allowed to mint
     function setHumanBondContract(address contractAddress) external onlyOwner {
         humanBondContract = contractAddress;
     }
@@ -58,7 +57,6 @@ contract VowNFT is ERC721, Ownable {
     }
 
     /// @notice Mint a Bond NFT to `to`address and store marriage metadata
-    //only HumanBond contract can mint
     function mintVowNFT(address to, address _partnerA, address _partnerB, uint256 _bondStart, bytes32 _marriageId)
         external
         onlyHumanBond
@@ -139,7 +137,7 @@ contract VowNFT is ERC721, Ownable {
         return super._update(to, tokenId, auth);
     }
 
-    /// @notice Convenient getter for token metadata
+    /// @notice Getter for token metadata
     function getTokenMetadata(uint256 id)
         external
         view

@@ -12,10 +12,10 @@ It includes:
 
 ## 📌 Deployed and verified Contract Addresses (World Chain Mainnet)
 
-- **VowNFT** - `0x0DBAB3008e79A9BeE9F101005012BBbFADf078EA`
-- **MilestoneNFT** - `0xb379aEF186980C4F132c0F6e08A2496AcA5d5c3d`
-- **TimeToken** - `0xbC93519c042307fc5468B7b9d55f1A202799511c`
-- **HumanBond** - `0xDC8eF187dc35E381B2eF14E67130237C89E2c898`
+- **VowNFT** - `0xa1650cc531C2780FB8C006F4B8D314018F7f9ac9`
+- **MilestoneNFT** - `0x0a2759241D0cb610e3E61dB351813ddF8A52F14c`
+- **TimeToken** - `0x261F6d89491cbaDFf7813303363a514f4b226A82`
+- **HumanBond** - `0x6494daa4e693F748Eb0a16041ECfCEd51392bB13`
 
 ---
 

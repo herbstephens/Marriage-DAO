@@ -558,11 +558,6 @@
             "internalType": "bool"
           },
           {
-            "name": "hasProposal",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
             "name": "partner",
             "type": "address",
             "internalType": "address"

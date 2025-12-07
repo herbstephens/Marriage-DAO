@@ -5,7 +5,7 @@ import {ERC20, ERC20Burnable} from "openzeppelin-contracts/contracts/token/ERC20
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 /**
- * @title DayToken
+ * @title TIME Token
  * @author Leticia Azevedo (@letiweb3)
  * @dev A basic ERC20 token used for rewarding married users.
  */
