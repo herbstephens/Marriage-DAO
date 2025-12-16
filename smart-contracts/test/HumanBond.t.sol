@@ -59,9 +59,6 @@ contract AutomationFlowTest is Test {
         milestoneNFT.setHumanBondContract(address(humanBond));
         vowNFT.setHumanBondContract(address(humanBond));
         timeToken.setHumanBondContract(address(humanBond));
-        // vowNFT.transferOwnership(address(humanBond));
-        // timeToken.transferOwnership(address(humanBond));
-        // milestoneNFT.transferOwnership(address(humanBond));
 
         // Give ETH
         vm.deal(leticia, 10 ether);

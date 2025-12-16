@@ -5,7 +5,7 @@ import {ERC721} from "openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 /**
- * @title MilestoneNFT
+ * @title Milestone NFT
  * @author Leticia Azevedo (@letiweb3)
  * @notice Soulbound-style NFT collection that represents relationship anniversaries.
  *         Each year milestone can have its own metadata URI defined by the owner.
@@ -21,11 +21,11 @@ contract MilestoneNFT is ERC721, Ownable {
     /*                                 STATE VARS                                 */
     /* -------------------------------------------------------------------------- */
 
-    uint256 public totalSupply; // Counter for minted NFTs
+    uint256 public totalSupply; // Also Counter for minted NFTs
     address public humanBondContract; // Authorized minter
-    mapping(uint256 year => string metadata) public milestoneURIs; // year => IPFS URI
+    mapping(uint256 year => string metadata) public milestoneURIs;
     mapping(uint256 => uint256) public tokenYear; // tokenId => milestone year
-    uint256 public latestYear; // Highest milestone year set
+    uint256 public latestYear; // Highest milestone year set so far
     bool public frozen; // Prevents further edits once locked
 
     /* -------------------------------------------------------------------------- */

@@ -6,7 +6,7 @@ import {VowNFT} from "./VowNFT.sol";
 import {TimeToken} from "./TimeToken.sol";
 import {MilestoneNFT} from "./MilestoneNFT.sol";
 import {ByteHasher} from "./helpers/ByteHasher.sol";
-import {IWorldID} from "../lib/world-id-contracts/src/interfaces/IWorldID.sol";
+import {IWorldID} from "./helpers/IWorldID.sol";
 
 /**
  * @title Human Bond contract
@@ -94,6 +94,7 @@ contract HumanBond is Ownable {
 
     uint256 public immutable DAY; // 1 day = 1 TIME token reward shared
     uint256 public immutable YEAR; // 1 YEAR = new milestone NFT eligibility
+    uint256 public constant GROUP_ID = 1; // World ID Orb-only group. Required by World ID Route
 
     /* ----------------------------- EVENTS ----------------------------- */
     event ProposalCreated(address indexed proposer, address indexed proposed);
@@ -160,6 +161,7 @@ contract HumanBond is Ownable {
         // Verify proposer is a real human via World ID
         worldId.verifyProof(
             root,
+            GROUP_ID,
             signalHash, // encoded and hashed in the function
             proposerNullifier,
             externalNullifierPropose,
@@ -201,7 +203,7 @@ contract HumanBond is Ownable {
         } //not reaching, propose function reverts before
 
         // Verify acceptor is also a real human
-        worldId.verifyProof(root, signalHash, acceptorNullifier, externalNullifierAccept, proof);
+        worldId.verifyProof(root, GROUP_ID, signalHash, acceptorNullifier, externalNullifierAccept, proof);
 
         bytes32 marriageId = _getMarriageId(proposer, msg.sender);
         if (marriages[marriageId].active) {
