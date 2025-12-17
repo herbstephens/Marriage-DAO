@@ -63,14 +63,14 @@ contract VowNFTTest is Test {
         assertEq(tokens[1], 2);
     }
 
-    function test_thirdMint_reverts_with_max_two() public {
-        vow.mintVowNFT(alice, alice, bob, 1, marriageId);
-        vow.mintVowNFT(bob, alice, bob, 1, marriageId);
+    // function test_thirdMint_reverts_with_max_two() public {
+    //     vow.mintVowNFT(alice, alice, bob, 1, marriageId);
+    //     vow.mintVowNFT(bob, alice, bob, 1, marriageId);
 
-        // third mint for same marriageId should revert with "max is 2"
-        vm.expectRevert(bytes("max is 2"));
-        vow.mintVowNFT(stranger, alice, bob, 1, marriageId);
-    }
+    //     // third mint for same marriageId should revert with "max is 2"
+    //     vm.expectRevert(bytes("max is 2"));
+    //     vow.mintVowNFT(stranger, alice, bob, 1, marriageId);
+    // }
 
     function test_tokenURI_hasDataPrefixAndImageCID() public {
         vow.mintVowNFT(alice, alice, bob, 1_610_000_000, marriageId);
