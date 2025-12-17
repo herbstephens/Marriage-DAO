@@ -5,7 +5,7 @@ deploy:
 	forge script script/Deploy.s.sol:DeployScript --rpc-url http://localhost:8545 --broadcast --private-key 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6
 	forge script script/Deploy.s.sol:DeployScript --rpc-url $SEPOLIA_URL --private-key $SEPOLIA_KEY --verify --etherscan-api-key $API_KEY --broadcast
 	forge script script/Deploy.s.sol --rpc-url $WORLD_RPC --private-key $P_KEY --broadcast --verify --etherscan-api-key $API_KEY --chain-id 480
-
+forge script src/VowNFT.sol --rpc-url $WORLD_RPC --private-key $P_KEY --broadcast --verify --etherscan-api-key $API_KEY --chain-id 480
 propose:
 	cast send 0xc6B8FBF96CF7bbE45576417EC2163AcecFA88ECC \
 "propose(address,uint256,uint256,uint256[8])" \
