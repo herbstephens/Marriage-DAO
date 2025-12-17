@@ -28,7 +28,6 @@ contract HumanBond is Ownable {
     error HumanBond__NotProposedToYou();
     error HumanBond__AlreadyAccepted();
     error HumanBond__NothingToClaim();
-    error HumanBond__InvalidNullifier();
 
     /* ----------------------------- STRUCTS ----------------------------- */
 
@@ -81,7 +80,6 @@ contract HumanBond is Ownable {
     mapping(address => uint256) public proposerIndex; // proposer address => index in proposalsFor[proposed]
     mapping(bytes32 => Marriage) public marriages; // marriageId => Marriage struct
     mapping(address => bytes32) public activeMarriageOf; // quick lookup of active marriage ID by user address
-    mapping(uint256 => mapping(uint256 => bool)) public usedNullifier; // externalNullifier => nullifierHash => used or not
 
     bytes32[] public marriageIds; // Every couple has a unique “marriage fingerprint”
 
@@ -154,9 +152,6 @@ contract HumanBond is Ownable {
         if (activeMarriageOf[msg.sender] != bytes32(0) || activeMarriageOf[proposed] != bytes32(0)) {
             revert HumanBond__UserAlreadyMarried();
         }
-        if (usedNullifier[externalNullifierPropose][proposerNullifier]) {
-            revert HumanBond__InvalidNullifier();
-        }
 
         // Verify proposer is a real human via World ID
         worldId.verifyProof(
@@ -167,8 +162,6 @@ contract HumanBond is Ownable {
             externalNullifierPropose,
             proof
         );
-
-        usedNullifier[externalNullifierPropose][proposerNullifier] = true;
 
         //Store proposal
         proposals[msg.sender] = Proposal({
@@ -195,9 +188,6 @@ contract HumanBond is Ownable {
         if (proposalOfProposer.proposed != msg.sender) {
             revert HumanBond__NotProposedToYou();
         }
-        if (usedNullifier[externalNullifierAccept][acceptorNullifier]) {
-            revert HumanBond__InvalidNullifier();
-        } //not reaching, UserAlreadyMarried in propose fires first
         if (activeMarriageOf[proposer] != bytes32(0) || activeMarriageOf[msg.sender] != bytes32(0)) {
             revert HumanBond__UserAlreadyMarried();
         } //not reaching, propose function reverts before
@@ -211,7 +201,6 @@ contract HumanBond is Ownable {
         }
 
         proposalOfProposer.accepted = true;
-        usedNullifier[externalNullifierAccept][acceptorNullifier] = true;
 
         // Record bond data
         marriages[marriageId] = Marriage({

@@ -890,30 +890,6 @@
   },
   {
     "type": "function",
-    "name": "usedNullifier",
-    "inputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "vowNFT",
     "inputs": [],
     "outputs": [
@@ -1108,11 +1084,6 @@
   {
     "type": "error",
     "name": "HumanBond__InvalidAddress",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "HumanBond__InvalidNullifier",
     "inputs": []
   },
   {
