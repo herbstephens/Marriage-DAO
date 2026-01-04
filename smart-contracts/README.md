@@ -10,14 +10,12 @@ It includes:
 
 ---
 
-## 📌 Deployed Contract Addresses (World Chain Mainnet)
+## 📌 Deployed and verified Contract Addresses (World Chain Mainnet)
 
-- **VowNFT** - `0xaa8b0e47649a93f3092967dfc83287c7293c8fe7`
-- **MilestoneNFT** - `0x57302a1cc1597c573a7acc12876146dd7919bf49`
-- **TimeToken** - `0xd7dff24b9d0e217c0876b70944176d1415153c8b`
-- **HumanBond** - `0x8547412ca42cd3aac734d15a0cd566fd91454c0c`
-
----
+- **VowNFT** - `0x8c64c304854F9284ddb976918dF37Bd4f5949F22`
+- **MilestoneNFT** - `0x566c4a366625F08A714dd092f8bD2F0E86f906f5`
+- **TimeToken** - `0x39e629681a9db65D9352961d8dCD4C96C4A1169a`
+- **HumanBond** - `0xB3cbCB0294995FE1aCD7187B94aEDBD4555c5A63`
 
 ## 🚀 Deployment Guide (World Chain Mainnet)
 
@@ -65,10 +63,7 @@ Soulbound NFT representing a verified marriage.
 
 **Year and URI**:
 
-- **1 Year** - ipfs://QmPAVmWBuJnNgrGrAp34CqTa13VfKkEZkZak8d6E4MJio8
-- **2 Years** - ipfs://QmPTuKXg64EaeyreUFe4PJ1istspMd4G2oe2ArRYrtBGYn
-- **3 Years** - ipfs://Qma32oBrwNNQVR3KS14RHqt3QhgYMsGKabQv4jusdtgsKN
-- **4 Years** - ipfs://QmSw9ixqCVc7VPQzDdX1ZCdWWJwAfLHRdJsi831PsC94uh
+Soulbound NFT representing a milestones reached by the couple.
 
 ### TimeToken
 
