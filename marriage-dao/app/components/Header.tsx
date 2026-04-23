@@ -1,8 +1,8 @@
 /**
- * Purpose: Reusable Header component for Marriage DAO
+ * Purpose: Reusable Header component for HumanBond
  * Displays the logo in the top-left corner
  * Shows wallet connection button and address in the top-right
- * 
+ *
  * Uses walletAuth from MiniKit - NO backend SIWE verification needed
  */
 
@@ -11,30 +11,30 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useWalletAuth } from "@/lib/worldcoin/useWalletAuth";
 import { isInWorldApp } from "@/lib/worldcoin/initMiniKit";
+import { useHydrated } from "@/lib/hooks/useHydrated";
+import { useWorldProfile, displayName } from "@/lib/worldcoin/useWorldProfile";
+import { Info, X } from "lucide-react";
+
+const formatAddress = (addr: string) =>
+  `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 
 export function Header() {
   const { address, isConnected, isConnecting, connect, disconnect, error } = useWalletAuth();
+  const { profile } = useWorldProfile(isConnected ? address : null);
   const [isWorldApp, setIsWorldApp] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [showWalletInfo, setShowWalletInfo] = useState(false);
+  const mounted = useHydrated();
 
-  // Check if in World App after mount (to avoid hydration issues)
   useEffect(() => {
-    setMounted(true);
+    if (!mounted) return;
     const timer = setTimeout(() => {
       setIsWorldApp(isInWorldApp());
     }, 300);
     return () => clearTimeout(timer);
-  }, []);
-
-  /**
-   * Format wallet address for display
-   * Shows first 6 and last 4 characters
-   */
-  const formatAddress = (addr: string) => {
-    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
-  };
+  }, [mounted]);
 
   /**
    * Handle connect button click
@@ -56,11 +56,12 @@ export function Header() {
           <Link href="/" className="inline-block">
             <Image
               src="/Isotype.png"
-              alt="Marriage DAO Logo"
+              alt="HumanBond Logo"
               width={60}
               height={60}
               priority
               className="hover:opacity-80 transition-opacity"
+              style={{ width: "auto", height: "auto" }}
             />
           </Link>
           <div className="px-4 py-2 bg-black/5 rounded-full">
@@ -78,11 +79,12 @@ export function Header() {
         <Link href="/" className="inline-block">
           <Image
             src="/Isotype.png"
-            alt="Marriage DAO Logo"
+            alt="HumanBond Logo"
             width={60}
             height={60}
             priority
             className="hover:opacity-80 transition-opacity"
+            style={{ width: "auto", height: "auto" }}
           />
         </Link>
 
@@ -91,9 +93,9 @@ export function Header() {
           {isConnected && address ? (
             // Connected state
             <div className="flex items-center gap-3">
-              <div className="px-4 py-2 bg-black/5 rounded-full">
+              <div className="px-4 py-2 bg-black/5 rounded-full" title={address}>
                 <p className="text-sm font-mono text-black">
-                  {formatAddress(address)}
+                  {displayName(address, profile.username)}
                 </p>
               </div>
               <button
@@ -104,14 +106,23 @@ export function Header() {
               </button>
             </div>
           ) : isWorldApp ? (
-            // In World App - show connect button
-            <button
-              onClick={handleConnect}
-              disabled={isConnecting}
-              className="px-6 py-2 bg-black text-white rounded-full text-sm hover:bg-black/90 transition-colors disabled:opacity-50"
-            >
-              {isConnecting ? 'Connecting...' : 'Connect Wallet'}
-            </button>
+            // In World App - show connect button + info
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleConnect}
+                disabled={isConnecting}
+                className="px-6 py-2 bg-black text-white rounded-full text-sm hover:bg-black/90 transition-colors disabled:opacity-50"
+              >
+                {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+              </button>
+              <button
+                onClick={() => setShowWalletInfo(true)}
+                className="w-7 h-7 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
+                aria-label="What is Connect Wallet?"
+              >
+                <Info size={14} className="text-black/60" />
+              </button>
+            </div>
           ) : (
             // Not in World App
             <div className="px-4 py-2 bg-amber-100 rounded-full">
@@ -119,7 +130,7 @@ export function Header() {
             </div>
           )}
         </div>
-        
+
         {/* Error toast */}
         {error && (
           <div className="absolute top-full mt-2 right-6 px-4 py-2 bg-red-100 text-red-700 rounded-lg text-sm shadow-lg">
@@ -127,6 +138,42 @@ export function Header() {
           </div>
         )}
       </div>
+
+      {/* Connect Wallet info modal — portal escapes backdrop-blur stacking context */}
+      {showWalletInfo && createPortal(
+        <div
+          className="fixed inset-0 z-[200] flex items-end justify-center bg-black/40 backdrop-blur-sm p-4"
+          onClick={() => setShowWalletInfo(false)}
+        >
+          <div
+            className="w-full max-w-sm bg-white rounded-3xl p-6 space-y-4 shadow-2xl animate-in slide-in-from-bottom-4 duration-300"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-black text-black">Connect Wallet</h2>
+              <button
+                onClick={() => setShowWalletInfo(false)}
+                className="w-7 h-7 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
+              >
+                <X size={14} />
+              </button>
+            </div>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Tapping <strong>Connect Wallet</strong> links your <strong>World App wallet</strong> to HumanBond so the app knows which address to use for on-chain actions like creating proposals and minting NFTs.
+            </p>
+            <div className="bg-gray-50 rounded-2xl p-4 space-y-2">
+              <p className="text-xs font-bold text-black uppercase tracking-wider">Why it&apos;s safe</p>
+              <ul className="text-xs text-gray-500 space-y-1">
+                <li>• Your private key never leaves World App</li>
+                <li>• The app only receives your public wallet address</li>
+                <li>• No funds are moved without your explicit approval</li>
+                <li>• You can disconnect at any time</li>
+              </ul>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </header>
   );
 }
