@@ -25,6 +25,7 @@ const PrenupModal = dynamic(() => import("./PrenupModal").then(m => m.PrenupModa
 
 type AcceptState = "idle" | "verifying" | "sending" | "success" | "error";
 
+
 export function AcceptProposalForm() {
   const [rawInput, setRawInput] = useState("");
   const [resolvedAddress, setResolvedAddress] = useState("");
