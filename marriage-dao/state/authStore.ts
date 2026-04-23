@@ -26,7 +26,8 @@ type AuthState = {
   isVerified: boolean
   verificationData: VerificationData | null
   walletAddress: string | null
-  
+  manuallyDisconnected: boolean // Flag to prevent auto-reconnect
+
   // Actions
   setVerified: (data: VerificationData) => void
   setWalletAddress: (address: string) => void
@@ -45,6 +46,7 @@ export const useAuthStore = create<AuthState>()(
       isVerified: false,
       verificationData: null,
       walletAddress: null,
+      manuallyDisconnected: false,
 
       /**
        * Set user as verified
@@ -62,6 +64,7 @@ export const useAuthStore = create<AuthState>()(
       setWalletAddress: (address: string) => {
         set({
           walletAddress: address,
+          manuallyDisconnected: false, // Reset flag when connecting
         })
       },
 
@@ -71,6 +74,7 @@ export const useAuthStore = create<AuthState>()(
       clearWallet: () => {
         set({
           walletAddress: null,
+          manuallyDisconnected: true, // Set flag to prevent auto-reconnect
         })
       },
 
@@ -82,6 +86,7 @@ export const useAuthStore = create<AuthState>()(
           isVerified: false,
           verificationData: null,
           walletAddress: null,
+          manuallyDisconnected: true, // Set flag to prevent auto-reconnect
         })
       },
 
@@ -91,16 +96,17 @@ export const useAuthStore = create<AuthState>()(
        */
       checkVerificationExpiry: () => {
         const { verificationData } = get()
-        
+
         if (!verificationData) {
           return false
         }
 
         const now = Date.now()
         const hoursSinceVerification = (now - verificationData.verified_at) / (1000 * 60 * 60)
-        
+
         // Expire after 24 hours
-        if (hoursSinceVerification > 24) {
+        if (hoursSinceVerification > 24
+        ) {
           get().clearVerification()
           return false
         }
@@ -109,7 +115,17 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'marriage-dao-auth', // localStorage key
+      name: 'humanbond-auth',
+      version: 1,
+      migrate: (persisted: any, version: number) => {
+        if (version === 0) {
+          return {
+            ...persisted,
+            manuallyDisconnected: persisted.manuallyDisconnected ?? false,
+          }
+        }
+        return persisted as AuthState
+      },
     }
   )
 )
